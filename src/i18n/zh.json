@@ -1,0 +1,16 @@
+{
+  "home_page": {
+    "header": {
+      "project_intro": "项目说明",
+      "source_code": "项目源码",
+      "author_blog": "作者博客",
+      "login": "登录",
+      "register": "注册"
+    },
+    "guide": {
+      "todo": "待办事项",
+      "link": "网站导航",
+      "music": "音乐列表"
+    }
+  }
+}

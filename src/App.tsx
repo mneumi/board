@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from 'styled-components';
+import { Header, Guide } from './components';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper>
+      <Header />
+      <Guide />
+      <Main>Main</Main>
+    </Wrapper>
   );
-}
+};
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: red;
+  display: grid;
+  grid-template-rows: 3.5rem 1fr;
+  grid-template-columns: 10rem 1fr;
+  grid-template-areas:
+    'header header'
+    'nav main';
+`;
+
+const Main = styled.main`
+  grid-area: main;
+  background-color: #2c324f;
+`;
 
 export default App;

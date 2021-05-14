@@ -1,0 +1,16 @@
+{
+  "home_page": {
+    "header": {
+      "project_intro": "Project Introduction",
+      "source_code": "Source Code",
+      "author_blog": "Blog",
+      "login": "Sign In",
+      "register": "Sign Up"
+    },
+    "guide": {
+      "todo": "Todo List",
+      "link": "Link",
+      "music": "Music List"
+    }
+  }
+}
