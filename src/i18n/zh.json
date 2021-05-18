@@ -1,7 +1,12 @@
 {
   "home_page": {
     "header": {
-      "project_intro": "项目说明",
+      "project_intro": {
+        "link": "项目说明",
+        "title": "温馨提示",
+        "detail": "本项目仅用于展示使用，并不用于提供任何商业用途和实际服务",
+        "hint": "由于服务器带宽小，请求可能挺慢，请耐心等候 ..."
+      },
       "source_code": "项目源码",
       "author_blog": "作者博客",
       "login": "登录",
@@ -12,5 +17,13 @@
       "link": "网站导航",
       "music": "音乐列表"
     }
+  },
+  "auth_page": {
+    "login": "登录",
+    "register": "注册",
+    "username": "请输入用户名",
+    "password": "请输入密码",
+    "confirm": "请确认密码",
+    "confirm_error": "两次密码输入不匹配"
   }
 }

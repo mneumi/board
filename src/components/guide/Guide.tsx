@@ -38,7 +38,7 @@ export const Guide: React.FC = () => {
 
 const Wrapper = styled.aside`
   grid-area: nav;
-  background-color: #1f253e;
+  background-color: #1DA57A;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,7 +1,12 @@
 {
   "home_page": {
     "header": {
-      "project_intro": "Project Introduction",
+      "project_intro": {
+        "link": "Project Introduction",
+        "title": "Tips",
+        "detail": "This project is only used for display purposes, and is not used to provide any commercial purposes and actual services",
+        "hint": "Due to the low bandwidth of the server, the request may be slow, please wait patiently ..."
+      },
       "source_code": "Source Code",
       "author_blog": "Blog",
       "login": "Sign In",
@@ -12,5 +17,13 @@
       "link": "Link",
       "music": "Music List"
     }
+  },
+  "auth_page": {
+    "login": "Sign In",
+    "register": "Sign Up",
+    "username": "please enter username",
+    "password": "please enter password",
+    "confirm": "please confirm password",
+    "confirm_error": "The two passwords that you entered do not match"
   }
 }

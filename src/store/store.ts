@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { languageSlice } from "./languageSlice";
+import { languageSlice } from './languageSlice';
+import { guideSlice } from './guideSlice';
 
 const rootReducer = {
-  language: languageSlice.reducer
-}
+  language: languageSlice.reducer,
+  guide: guideSlice.reducer,
+};
 
 export const store = configureStore({
   reducer: rootReducer,

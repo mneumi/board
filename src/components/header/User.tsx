@@ -31,10 +31,10 @@ export const User: React.FC = () => {
         </Dropdown>
       ) : (
         <>
-          <Button style={{ marginRight: '1rem' }} type="primary" size="small">
+          <Button style={{ marginRight: '1rem' }} size="small">
             {t('home_page.header.login')}
           </Button>
-          <Button type="primary" size="small">
+          <Button size="small">
             {t('home_page.header.register')}
           </Button>
         </>

@@ -5,14 +5,17 @@ import 'normalize.css';
 import 'antd/dist/antd.less';
 
 import { store } from './store';
-import { Provider } from 'react-redux';
-import "./i18n/config";
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { Provider as ReduxProvider } from 'react-redux';
+import './i18n/config';
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
+  <QueryClientProvider client={queryClient}>
+    <ReduxProvider store={store}>
       <App />
-    </Provider>
-  </React.StrictMode>,
+    </ReduxProvider>
+  </QueryClientProvider>,
   document.getElementById('root')
 );

@@ -6,21 +6,21 @@ import { Modal } from 'antd';
 export const Nav: React.FC = () => {
   const [t] = useTranslation();
 
-  function showModal() {
+  const showModal = () => {
     Modal.info({
-      title: 'This is a notification message',
+      title: t('home_page.header.project_intro.title'),
       content: (
         <div>
-          <p>some messages...some messages...</p>
-          <p>some messages...some messages...</p>
+          <p>{t('home_page.header.project_intro.detail')}</p>
+          <p>{t('home_page.header.project_intro.hint')}</p>
         </div>
-      )
+      ),
     });
-  }
+  };
 
   return (
     <Wrapper>
-      <div onClick={showModal}>{t('home_page.header.project_intro')}</div>
+      <div onClick={showModal}>{t('home_page.header.project_intro.link')}</div>
       <a
         href="https://github.com/mneumi/board"
         target="_blank"

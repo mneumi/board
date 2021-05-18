@@ -5,7 +5,7 @@ import LogoImage from '../../assets/logo.svg';
 export const Logo: React.FC = () => {
   return (
     <Wrapper>
-      <img src={LogoImage} alt="board" width={120} />
+      <Img src={LogoImage} />
     </Wrapper>
   );
 };
@@ -17,4 +17,8 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+`;
+
+const Img = styled.img`
+  height: 2.5rem;
 `;
