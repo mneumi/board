@@ -3,4 +3,4 @@ export * from './guide';
 export * from './common';
 export * from './auth';
 export * from './main';
-export * from './modal';
+export * from './form_modal';

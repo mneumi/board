@@ -1,38 +1,44 @@
 import React from 'react';
-import { Modal as AntdModal, Button, Form, Input, FormItemProps } from 'antd';
 import styled from 'styled-components';
+import { Modal as AntdModal, Button, Form, Input, FormItemProps } from 'antd';
 
 interface Props {
   title: string;
-  open: boolean;
   confirmText: string;
   cancelText: string;
   formItems: FormItem[];
-  confirmCb: (values: { [key: string]: string }) => void;
-  cancelCb: () => void;
+  confirmCb: (values: { [key: string]: any }) => void;
+  cancelCb?: () => void;
+  htmlElement: HTMLElement;
 }
 
-interface FormItem extends FormItemProps {
+export interface FormItem extends FormItemProps {
   key: string;
   placeholder: string;
+  initialValue?: string;
+  clear: boolean;
 }
 
-export const Modal: React.FC<Props> = (props) => {
+export const FormModal: React.FC<Props> = (props) => {
   const {
     title,
-    open,
     confirmCb,
     cancelCb,
     confirmText,
     cancelText,
     formItems,
+    htmlElement,
   } = props;
 
-  const onFinish = (values: { [key: string]: string }) => {
+  const onFinish = (values: { [key: string]: any }) => {
     confirmCb(values);
 
     // 清空input框内容
     formItems.forEach((item) => {
+      if (!item.clear) {
+        return;
+      }
+
       const fieldName = item.name?.toString()!;
       form.setFieldsValue({
         [fieldName]: null,
@@ -41,13 +47,14 @@ export const Modal: React.FC<Props> = (props) => {
   };
 
   const [form] = Form.useForm();
-
   return (
     <AntdModal
       title={title}
-      visible={open}
+      visible={true}
       closable={false}
       footer={null}
+      destroyOnClose
+      getContainer={htmlElement}
     >
       <Form form={form} layout="vertical" onFinish={onFinish}>
         {formItems.map((item) => {
@@ -57,8 +64,14 @@ export const Modal: React.FC<Props> = (props) => {
               label={item.label}
               rules={item.rules}
               key={item.key}
+              initialValue={item.initialValue}
             >
-              <Input allowClear placeholder={item.placeholder} />
+              <Input
+                // value={item.initialValue}
+                // defaultValue={item.initialValue}
+                allowClear
+                placeholder={item.placeholder}
+              />
             </Form.Item>
           );
         })}
