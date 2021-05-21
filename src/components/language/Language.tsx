@@ -9,6 +9,7 @@ import {
   languageType,
   languageSlice,
 } from '../../store';
+import { setStorageLng } from '../../i18n/config';
 
 export const Language: React.FC = () => {
   const currentLanguage = useSelector(
@@ -19,6 +20,7 @@ export const Language: React.FC = () => {
 
   const changeLanguage = (code: languageType) => {
     dispatch(languageSlice.actions.changeLanguage(code));
+    setStorageLng(code);
   };
 
   const languageMenu = (

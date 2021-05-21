@@ -1,14 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Dropdown, Menu, Modal } from 'antd';
+import { Button, Dropdown, Menu } from 'antd';
 import { FaPlus } from 'react-icons/fa';
 import { SettingOutlined } from '@ant-design/icons';
 import { GuideType } from '../../common/interface';
-import {
-  createFormModal,
-  CreateFormModalParams,
-} from '../form_modal/createFormModal';
-import { useCustomMutation } from '../../utils/request';
+import { useDelListEffect, useSetListEffect } from './hooks';
 
 interface Props {
   type: GuideType;
@@ -19,65 +15,10 @@ interface Props {
 export const ListHeader: React.FC<Props> = (props) => {
   const { title, type, listId } = props;
 
-  const { mutate: setList, loading: setLoading } = useCustomMutation<
-    null,
-    { title: string; listId: number }
-  >({
-    cacheTag: `${type}list`,
-    url: `/${type}list/${listId}`,
-    method: 'PUT',
-    successMessage: '更新列表成功',
-    errorMessage: '更新列表失败',
-  });
-
-  const { mutate: delList, loading: delLoading } = useCustomMutation({
-    cacheTag: `${type}list`,
-    url: `/${type}list`,
-    pathParam: `/${listId}`,
-    method: 'DELETE',
-    successMessage: '删除列表成功',
-    errorMessage: '删除列表失败',
-  });
-
-  const confirmCb = (values: { [key: string]: string }) => {
-    const { title } = values;
-    setList({
-      data: {
-        title,
-        listId,
-      },
-    });
-  };
-
-  const createFormModalParam: CreateFormModalParams = {
-    title: '编辑列表',
-    confirmCb,
-    confirmText: '更新',
-    cancelText: '取消',
-    formItems: [
-      {
-        key: 'title',
-        name: 'title',
-        label: '列表标题',
-        rules: [{ required: true, message: '列表标题不能为空' }],
-        initialValue: title,
-        placeholder: '请输入标题',
-        clear: false,
-      },
-    ],
-  };
-
-  const onDelete = (listId: number) => {
-    Modal.confirm({
-      content: '确定要删除吗？一旦删除无法恢复！',
-      okText: '确认删除',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: () => {
-        delList({});
-      },
-    });
-  };
+  const { onSet, setLoading } = useSetListEffect({ listId, type, title });
+  const { onDel, delLoading } = useDelListEffect({ listId, type });
+  // const { onAdd } = useAddCardEffect(type, listId);
+  const onAdd = () => {};
 
   return (
     <Wrapper>
@@ -86,19 +27,16 @@ export const ListHeader: React.FC<Props> = (props) => {
         <div>{title}</div>
       </ListHeaderTitle>
       <ListHeaderController>
-        <Plus />
+        <PlusButton onClick={onAdd} />
         <Dropdown
           overlay={
             <Menu>
-              <Menu.Item
-                key="create"
-                onClick={() => createFormModal(createFormModalParam)}
-              >
+              <Menu.Item key="create" onClick={onSet}>
                 <Button loading={setLoading} type="text">
                   编辑列表
                 </Button>
               </Menu.Item>
-              <Menu.Item key="delete" onClick={() => onDelete(listId)}>
+              <Menu.Item key="delete" onClick={onDel}>
                 <Button loading={delLoading} type="text">
                   删除列表
                 </Button>
@@ -138,7 +76,7 @@ const ListHeaderController = styled.div`
   align-items: center;
 `;
 
-const Plus = styled(FaPlus)`
+const PlusButton = styled(FaPlus)`
   cursor: pointer;
   margin-right: 0.4rem;
   font-size: 0.8rem;

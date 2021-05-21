@@ -10,7 +10,9 @@
       "source_code": "Source Code",
       "author_blog": "Blog",
       "login": "Sign In",
-      "register": "Sign Up"
+      "register": "Sign Up",
+      "edit_profile": "Edit Profile",
+      "logout": "Log Out"
     },
     "guide": {
       "todo": "Todo List",

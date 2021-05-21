@@ -1,5 +1,6 @@
+import i18n from 'i18next';
 import { createSlice } from '@reduxjs/toolkit';
-import i18n from "i18next";
+import { getStorageLng } from '../i18n/config';
 
 export type languageType = 'zh' | 'en';
 
@@ -8,7 +9,7 @@ interface initialStateType {
 }
 
 const initialState: initialStateType = {
-  currentLanguage: 'zh',
+  currentLanguage: getStorageLng(),
 };
 
 export const languageSlice = createSlice({

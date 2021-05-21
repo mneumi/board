@@ -1,8 +1,10 @@
 import React from 'react';
-import { HomeView } from './views';
+import { useAuth } from './components/auth/hooks';
+import { AuthView, HomeView } from './views';
 
 const App: React.FC = () => {
-  return <HomeView />;
+  const { user } = useAuth();
+  return user ? <HomeView /> : <AuthView />;
 };
 
 export default App;

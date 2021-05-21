@@ -2,12 +2,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useAuth } from './hooks';
 
 export const LoginForm: React.FC = () => {
   const [t] = useTranslation();
+  const { login } = useAuth();
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const onFinish = (payload: { username: string; password: string }) => {
+    login(payload);
   };
 
   return (

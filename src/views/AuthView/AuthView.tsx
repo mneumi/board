@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import LogoImage from '../../assets/logo.svg';
 import { Card as AntdCard } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { Language as CommonLanguage } from '../../components';
-import { LoginForm, RegisterForm } from '../../components';
+import {
+  Language as CommonLanguage,
+  LoginForm,
+  RegisterForm,
+} from '../../components';
 
 type TabType = 'login' | 'register';
 
@@ -17,8 +20,10 @@ interface ContentListType {
   [key: string]: React.ReactElement;
 }
 
-export const LoginView: React.FC = () => {
+const useTabList = () => {
   const [t] = useTranslation();
+
+  const [currentTab, setCurrentTab] = useState<TabType>('login');
 
   const tabList: TabListType[] = [
     {
@@ -36,23 +41,27 @@ export const LoginView: React.FC = () => {
     register: <RegisterForm />,
   };
 
-  const [key, setKey] = useState<TabType>('login');
+  return { currentTab, setCurrentTab, tabList, contentList };
+};
+
+export const AuthView: React.FC = () => {
+  const { currentTab, setCurrentTab, tabList, contentList } = useTabList();
 
   return (
     <Wrapper>
       <Img src={LogoImage} alt="" />
       <Card
         tabList={tabList}
-        activeTabKey={key}
-        onTabChange={(key) => {
-          setKey(key as TabType);
+        activeTabKey={currentTab}
+        onTabChange={(tab) => {
+          setCurrentTab(tab as TabType);
         }}
       >
-        {contentList[key]}
+        {contentList[currentTab]}
       </Card>
-      <div style={{ position: 'fixed', top: '2rem', right: '2rem' }}>
-        <Language />
-      </div>
+      <LanguageWrapper>
+        <CommonLanguage />
+      </LanguageWrapper>
     </Wrapper>
   );
 };
@@ -77,9 +86,8 @@ const Img = styled.img`
   height: 5rem;
 `;
 
-const Language = styled(CommonLanguage)`
-  position: fixed !important;
-  top: 0;
-  right: 0;
-  background-color: red;
+const LanguageWrapper = styled.div`
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
 `;

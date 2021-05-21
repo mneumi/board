@@ -21,7 +21,7 @@ export const Content: React.FC<Props> = (props) => {
       <Row style={{ width: '100%' }}>
         {list.map((item) => (
           <Col span={6} key={item.id}>
-            <List listId={item.id} type={type} title={item.title} />
+            <List listId={item.id} type={type} title={item.title}></List>
           </Col>
         ))}
       </Row>

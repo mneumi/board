@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Logo } from './Logo';
 import { Nav } from './Nav';
 import { User } from './User';
-import { Language } from '../common/Language';
+import { Language } from '../language';
 
 export const Header: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
 
 const Wrapper = styled.header`
   grid-area: header;
-  background-color: #1DA57A;
+  background-color: #1da57a;
   color: #fff;
   display: flex;
   align-items: center;

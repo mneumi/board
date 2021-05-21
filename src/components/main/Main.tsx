@@ -1,21 +1,19 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { Spin } from 'antd';
 import { useSelector } from '../../store';
 import { ToolBar } from '../tool_bar/ToolBar';
 import { Content } from './Content';
-import { Spin } from 'antd';
-import { useGetList } from './hooks';
+import { useGetListEffect } from '../list/hooks';
 
 export const Main: React.FC = () => {
   const currentGuide = useSelector((state) => state.guide.currentGuide);
 
   const { list, total, isLoading, isError, take, page, setPage } =
-    useGetList(currentGuide);
+    useGetListEffect(currentGuide);
 
   useEffect(() => {
-    return () => {
-      setPage(1); // 重置页数
-    };
+    return () => setPage(1); // 重置页数
   }, [currentGuide, setPage]);
 
   const render = () => {

@@ -1,64 +1,130 @@
 import React from 'react';
+import { Formik } from 'formik';
+import { SubmitButton, ResetButton, Form } from 'formik-antd';
+import { Modal as AntdModal, Button, Row, Col } from 'antd';
 import styled from 'styled-components';
-import { Modal as AntdModal, Button, Form, Input, FormItemProps } from 'antd';
+import { FormModalItem, FormModalItemProps } from './FormModalItem';
 
-interface Props {
+export interface FormModalProps {
   title: string;
-  confirmText: string;
+  okText: string;
   cancelText: string;
-  formItems: FormItem[];
-  confirmCb: (values: { [key: string]: any }) => void;
-  cancelCb?: () => void;
+  onSubmit: (values: any) => void;
+  onCancel: () => void;
+  formModalItems: FormModalItemProps[];
   htmlElement: HTMLElement;
 }
 
-export interface FormItem extends FormItemProps {
-  key: string;
-  placeholder: string;
-  initialValue?: string;
-  clear: boolean;
-}
+// function validateRequired(value: string) {
+//   return value ? undefined : '输入不能为空';
+// }
 
-export const FormModal: React.FC<Props> = (props) => {
+export const FormModal: React.FC<FormModalProps> = (props) => {
   const {
     title,
-    confirmCb,
-    cancelCb,
-    confirmText,
+    onSubmit,
+    okText,
+    onCancel,
     cancelText,
-    formItems,
+    formModalItems,
     htmlElement,
   } = props;
 
-  const onFinish = (values: { [key: string]: any }) => {
-    confirmCb(values);
-
-    // 清空input框内容
-    formItems.forEach((item) => {
-      if (!item.clear) {
-        return;
-      }
-
-      const fieldName = item.name?.toString()!;
-      form.setFieldsValue({
-        [fieldName]: null,
-      });
-    });
+  const computeInitialValues = () => {
+    return formModalItems.reduce((prev, item) => {
+      return {
+        ...prev,
+        [item.name]: item.defaultValue,
+      };
+    }, {});
   };
 
-  const [form] = Form.useForm();
   return (
     <AntdModal
       title={title}
       visible={true}
       closable={false}
       footer={null}
-      destroyOnClose
       getContainer={htmlElement}
+      destroyOnClose
     >
-      <Form form={form} layout="vertical" onFinish={onFinish}>
-        {formItems.map((item) => {
+      <Formik initialValues={computeInitialValues()} onSubmit={onSubmit}>
+        {(props) => {
+          const { setFieldValue } = props;
+
           return (
+            <Form layout="vertical">
+              {formModalItems.map((item) => {
+                return (
+                  <FormModalItem
+                    {...item}
+                    key={item.name}
+                    setFieldValue={setFieldValue}
+                  />
+                );
+              })}
+              <Row>
+                <Col offset={8}>
+                  <Button.Group>
+                    <Button onClick={onCancel}>{cancelText}</Button>
+                    <ResetButton>Reset</ResetButton>
+                    <SubmitButton>{okText}</SubmitButton>
+                  </Button.Group>
+                </Col>
+              </Row>
+            </Form>
+          );
+        }}
+      </Formik>
+    </AntdModal>
+  );
+};
+
+const FormController = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  > * {
+    margin-right: 1rem;
+  }
+`;
+
+/*
+<Form form={form} layout="vertical" onFinish={onFinish}>
+        {formItems.map((item) => {
+          return item?.type === 'upload' ? (
+            <>
+              <Form.Item
+                name={item.name}
+                label={item.label}
+                rules={item.rules}
+                key={item.key}
+                initialValue={imageUrl}
+              >
+                <Input
+                  value={imageUrl}
+                  defaultValue={imageUrl}
+                  // style={{ display: 'none', height: 0 }}
+                  allowClear
+                  placeholder={item.placeholder}
+                />
+                <Upload setHasUpload={setHasUpload} setImageUrl={setImageUrl} />
+              </Form.Item>
+              {imageUrl}
+              
+            </>
+          ) : item?.type === 'selector' && item.selectList ? (
+            <Form.Item label={item.label}>
+              <Select
+                defaultValue={item.selectList[0].value}
+                onChange={(value) => console.log(value)}
+              >
+                {item.selectList.map((item) => (
+                  <Select.Option value={item.value}>{item.name}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          ) : (
             <Form.Item
               name={item.name}
               label={item.label}
@@ -82,15 +148,4 @@ export const FormModal: React.FC<Props> = (props) => {
           </Button>
         </FormController>
       </Form>
-    </AntdModal>
-  );
-};
-
-const FormController = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.5rem;
-  > * {
-    margin-right: 1rem;
-  }
-`;
+*/

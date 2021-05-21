@@ -13,12 +13,17 @@ interface Props {
 }
 
 export const ToolBar: React.FC<Props> = (props) => {
-  const { type, ...rest } = props;
+  const { type, total, page, pageSize, setPage } = props;
 
   return (
     <Wrapper>
       <AddListButton type={type} />
-      <Pagination {...rest} />
+      <Pagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        setPage={setPage}
+      />
     </Wrapper>
   );
 };

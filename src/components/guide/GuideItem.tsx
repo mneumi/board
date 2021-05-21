@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { IconType as ReactIconType } from 'react-icons';
 import { FaLink, FaMusic, FaAddressCard } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { GuideType } from '../../common/interface';
 import { guideSlice } from '../../store/guideSlice';
-import { useDispatch } from 'react-redux';
 import { RootDispatch, useSelector } from '../../store';
 
 export interface GuideItemProps {

@@ -10,7 +10,9 @@
       "source_code": "项目源码",
       "author_blog": "作者博客",
       "login": "登录",
-      "register": "注册"
+      "register": "注册",
+      "edit_profile": "修改资料",
+      "logout": "退出登录"
     },
     "guide": {
       "todo": "待办事项",

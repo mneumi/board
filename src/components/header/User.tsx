@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Dropdown, Button, Menu } from 'antd';
-import { FaCircle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../auth/hooks';
+import { Modal } from 'antd';
 
 export const User: React.FC = () => {
-  const [isLogin] = useState(false);
+  const { user, logout } = useAuth();
   const [t] = useTranslation();
+
+  const handleEditProfile = () => {
+    Modal.confirm({
+      title: '编辑资料',
+      content: <h2>Hello World</h2>,
+      onOk: () => {
+        alert('ok');
+      },
+      onCancel: () => {
+        alert('cancel');
+      },
+    });
+  };
 
   const userMenu = (
     <Menu>
@@ -15,28 +29,33 @@ export const User: React.FC = () => {
         disabled
         style={{ color: 'black', cursor: 'default' }}
       >
-        mneumi
+        {user?.nickname}
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="editProfile">修改资料</Menu.Item>
-      <Menu.Item key="logout">退出登录</Menu.Item>
+      <Menu.Item key="editProfile" onClick={handleEditProfile}>
+        {t('home_page.header.edit_profile')}
+      </Menu.Item>
+      <Menu.Item key="logout" onClick={logout}>
+        {t('home_page.header.logout')}
+      </Menu.Item>
     </Menu>
   );
 
   return (
     <Wrapper>
-      {isLogin ? (
+      {user ? (
         <Dropdown overlay={userMenu} placement="bottomCenter" arrow>
-          <FaCircle size={30} />
+          <Avatar
+            src="http://columns-oss.oss-cn-shenzhen.aliyuncs.com/1619371424893-4156lluh.jpeg"
+            alt=""
+          />
         </Dropdown>
       ) : (
         <>
           <Button style={{ marginRight: '1rem' }} size="small">
             {t('home_page.header.login')}
           </Button>
-          <Button size="small">
-            {t('home_page.header.register')}
-          </Button>
+          <Button size="small">{t('home_page.header.register')}</Button>
         </>
       )}
     </Wrapper>
@@ -49,4 +68,10 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem;
+`;
+
+const Avatar = styled.img`
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
 `;

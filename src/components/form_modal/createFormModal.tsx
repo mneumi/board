@@ -1,41 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FormItem, FormModal } from './FormModal';
+import { FormModal, FormModalProps } from './FormModal';
 
-export interface CreateFormModalParams {
-  title: string;
-  confirmCb: (values: { [key: string]: any }) => void;
-  cancelCb?: () => void;
-  confirmText: string;
-  cancelText: string;
-  formItems: FormItem[];
-}
+export type CreateFormModalParams = Omit<FormModalProps, 'htmlElement'>;
 
 export const createFormModal = (params: CreateFormModalParams) => {
-  const { title, confirmCb, cancelCb, confirmText, cancelText, formItems } =
-    params;
+  const { title, onSubmit, okText, cancelText, formModalItems } = params;
 
   const rootDOM = document.getElementById('root');
-
   const modalDOM = document.createElement('div');
   rootDOM?.appendChild(modalDOM);
 
   const formModalJSX = (
     <FormModal
       title={title}
-      confirmCb={(values) => {
-        confirmCb(values);
+      onSubmit={(values) => {
+        onSubmit(values);
         rootDOM?.removeChild(modalDOM);
       }}
-      cancelCb={() => {
-        if (cancelCb) {
-          cancelCb();
-        }
+      onCancel={() => {
         rootDOM?.removeChild(modalDOM);
       }}
-      confirmText={confirmText}
+      okText={okText}
       cancelText={cancelText}
-      formItems={formItems}
+      formModalItems={formModalItems}
       htmlElement={modalDOM}
     />
   );
