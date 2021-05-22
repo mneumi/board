@@ -6,7 +6,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 export const RegisterForm: React.FC = () => {
   const [t] = useTranslation();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: unknown) => {
     console.log('Received values of form: ', values);
   };
 

@@ -46,6 +46,8 @@ const Wrapper = styled.main`
   grid-area: main;
   background-color: #207f4c;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   color: #fff;
 `;

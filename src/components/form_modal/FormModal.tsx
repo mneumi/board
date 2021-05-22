@@ -2,14 +2,13 @@ import React from 'react';
 import { Formik } from 'formik';
 import { SubmitButton, ResetButton, Form } from 'formik-antd';
 import { Modal as AntdModal, Button, Row, Col } from 'antd';
-import styled from 'styled-components';
 import { FormModalItem, FormModalItemProps } from './FormModalItem';
 
 export interface FormModalProps {
   title: string;
   okText: string;
   cancelText: string;
-  onSubmit: (values: any) => void;
+  onSubmit: (values: { [key: string]: any }) => void;
   onCancel: () => void;
   formModalItems: FormModalItemProps[];
   htmlElement: HTMLElement;
@@ -80,14 +79,14 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
   );
 };
 
-const FormController = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.5rem;
-  > * {
-    margin-right: 1rem;
-  }
-`;
+// const FormController = styled.div`
+//   display: flex;
+//   justify-content: flex-end;
+//   margin-top: 0.5rem;
+//   > * {
+//     margin-right: 1rem;
+//   }
+// `;
 
 /*
 <Form form={form} layout="vertical" onFinish={onFinish}>

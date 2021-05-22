@@ -12,14 +12,11 @@ interface Props {
 export const AddListButton: React.FC<Props> = (props) => {
   const { type } = props;
 
-  const { loading, createFormModalParam } = useAddListEffect(type);
+  const { onAdd, loading } = useAddListEffect(type);
 
   return (
     <React.Fragment>
-      <Button
-        loading={loading}
-        onClick={() => createFormModal(createFormModalParam)}
-      >
+      <Button loading={loading} onClick={onAdd}>
         新建列表
       </Button>
     </React.Fragment>

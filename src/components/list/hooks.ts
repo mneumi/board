@@ -21,12 +21,7 @@ interface DelParams {
 }
 
 export const useAddListEffect = (type: GuideType) => {
-  const { mutate: addList, loading } = useCustomMutation<
-    null,
-    {
-      title: string;
-    }
-  >({
+  const { mutate: addList, loading } = useCustomMutation({
     url: `/${type}list`,
     method: 'POST',
     cacheTag: `${type}list`,
@@ -58,14 +53,17 @@ export const useAddListEffect = (type: GuideType) => {
     ],
   };
 
-  return { createFormModalParam, loading };
+  const onAdd = () => {
+    createFormModal(createFormModalParam);
+  };
+
+  return { onAdd, loading };
 };
 
 export const useDelListEffect = ({ type, listId }: DelParams) => {
   const { mutate: delList, loading: delLoading } = useCustomMutation({
     cacheTag: `${type}list`,
-    url: `/${type}list`,
-    pathParam: `/${listId}`,
+    url: `/${type}list/${listId}`,
     method: 'DELETE',
     successMessage: '删除列表成功',
     errorMessage: '删除列表失败',
@@ -85,10 +83,7 @@ export const useDelListEffect = ({ type, listId }: DelParams) => {
 };
 
 export const useSetListEffect = ({ listId, title, type }: SetListParams) => {
-  const { mutate: setList, loading: setLoading } = useCustomMutation<
-    null,
-    { title: string; listId: number }
-  >({
+  const { mutate: setList, loading: setLoading } = useCustomMutation({
     url: `/${type}list/${listId}`,
     method: 'PUT',
     cacheTag: `${type}list`,
@@ -133,8 +128,8 @@ export const useSetListEffect = ({ listId, title, type }: SetListParams) => {
 };
 
 export const useGetListEffect = (type: GuideType, take = 4) => {
-  const [page, setPage] = useState<number>(1);
   const queryClient = useQueryClient();
+  const [page, setPage] = useState<number>(1);
 
   const { data, isLoading, isError } = useQuery(
     [`${type}list`, { take, page }],

@@ -1,56 +1,90 @@
 import React from 'react';
-import { FormItem, Input } from 'formik-antd';
+import { FormItem, Input, Select } from 'formik-antd';
 import { Upload } from '../upload';
 
-export type FormModalItemType = 'upload' | 'selector' | 'text';
+export type FormModalItemType =
+  | 'upload:image'
+  | 'upload:file'
+  | 'selector'
+  | 'text';
 
 export type setFieldValueType = (
   field: string,
-  value: any,
+  value: unknown,
   shouldValidate?: boolean | undefined
 ) => void;
+
+export interface SelectOptionType {
+  displayName: string;
+  value: string;
+}
 
 export interface FormModalItemProps {
   name: string;
   label: string;
   type: FormModalItemType;
-  defaultValue: any;
+  defaultValue: unknown;
   notRequired?: boolean;
   placeholder?: string;
   validate?: (value: any) => string | undefined;
   setFieldValue?: setFieldValueType;
+  selectOptions?: SelectOptionType[];
 }
 
 export const FormModalItem: React.FC<FormModalItemProps> = (props) => {
-  const { name, label, type, notRequired, placeholder, validate, setFieldValue } =
-    props;
+  const {
+    name,
+    label,
+    type,
+    notRequired,
+    placeholder,
+    validate,
+    setFieldValue,
+    selectOptions,
+  } = props;
 
-  let inner: any = null;
+  let JSXFragment: React.ReactNode | null = null;
 
   switch (type) {
     case 'text':
-      inner = <Input name={name} placeholder={placeholder} />;
+      JSXFragment = <Input name={name} placeholder={placeholder} />;
       break;
-    case 'upload':
-      inner = (
+    case 'upload:image':
+    case 'upload:file':
+      JSXFragment = (
         <>
           <Input
             name={name}
             placeholder={placeholder}
             style={{ display: 'none' }}
           />
-          <Upload setFieldValue={setFieldValue!} />
+          <Upload
+            type={type === 'upload:image' ? 'image' : 'file'}
+            fieldName={name}
+            setFieldValue={setFieldValue!}
+          />
         </>
       );
       break;
     case 'selector':
-      inner = null;
+      JSXFragment = (
+        <Select name={name} placeholder={placeholder}>
+          {selectOptions?.map((item) => (
+            <Select.Option value={item.value}>{item.displayName}</Select.Option>
+          ))}
+        </Select>
+      );
       break;
   }
 
   return (
-    <FormItem name={name} label={label} required={!notRequired} validate={validate}>
-      {inner}
+    <FormItem
+      name={name}
+      label={label}
+      required={!notRequired}
+      validate={validate}
+    >
+      {JSXFragment}
     </FormItem>
   );
 };

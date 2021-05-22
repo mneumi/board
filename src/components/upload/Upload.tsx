@@ -1,58 +1,43 @@
 import React, { useState } from 'react';
-import { Upload as AntdUpload } from 'antd';
-import ImgCrop from 'antd-img-crop';
-import styled from 'styled-components';
+import { Upload as AntdUpload, Button, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import { setFieldValueType } from '../form_modal/FormModalItem';
-import './Upload.css';
-import { useAuth } from '../auth/hooks';
+import { getToken } from '../auth/auth.service';
 
 interface Props {
+  fieldName: string;
   setFieldValue: setFieldValueType;
-}
-
-interface UploadFileType {
-  name: string;
-  percent: number;
-  status: 'error' | 'success' | 'done' | 'uploading' | 'removed';
-  thumbUrl?: string;
-  uid: string;
-  url: string;
+  type: 'image' | 'file';
 }
 
 export const Upload: React.FC<Props> = (props) => {
-  const { setFieldValue } = props;
+  const { fieldName, setFieldValue, type } = props;
+  const [hasUpload, setHasUpload] = useState<boolean>(false);
 
-  const [fileList, setFileList] = useState<UploadFileType[]>([]);
-  const { getToken } = useAuth();
+  const listType = type === 'image' ? 'picture' : 'text';
 
-  const onChange = (param: any) => {
-    setFileList(param.fileList);
-
-    if (param?.file?.response?.message?.url) {
-      const url = param.file.response.message.url;
-
-      setFieldValue('imageUrl', url);
+  const onChange = (info: any) => {
+    if (info.file.status === 'done') {
+      const url = info.file.response.message.url;
+      setFieldValue(fieldName, url);
+      setHasUpload(true);
+    } else if (info.file.status === 'error') {
+      message.error('上传失败');
     }
   };
 
   return (
-    <ImgCrop>
-      <Wrapper
-        action="http://localhost:5000/upload"
-        headers={{
-          Authorization: `Bearer ${getToken()}`,
-        }}
-        listType="picture-card"
-        fileList={fileList}
-        onChange={onChange}
-        showUploadList={{ showPreviewIcon: false }}
-      >
-        {fileList.length < 1 ? '+ Upload' : null}
-      </Wrapper>
-    </ImgCrop>
+    <AntdUpload
+      name="file"
+      action="http://localhost:5000/upload"
+      headers={{ Authorization: `Bearer ${getToken()}` }}
+      listType={listType}
+      onChange={onChange}
+      onRemove={() => setHasUpload(false)}
+    >
+      <Button icon={<UploadOutlined />} disabled={hasUpload}>
+        点击上传
+      </Button>
+    </AntdUpload>
   );
 };
-
-const Wrapper = styled(AntdUpload)`
-  /* width: 10rem !important; */
-`;

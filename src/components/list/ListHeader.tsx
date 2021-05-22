@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button, Dropdown, Menu } from 'antd';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { SettingOutlined } from '@ant-design/icons';
 import { GuideType } from '../../common/interface';
 import { useDelListEffect, useSetListEffect } from './hooks';
+import { useAddCardEffect } from '../card/hooks';
 
 interface Props {
   type: GuideType;
@@ -17,8 +18,7 @@ export const ListHeader: React.FC<Props> = (props) => {
 
   const { onSet, setLoading } = useSetListEffect({ listId, type, title });
   const { onDel, delLoading } = useDelListEffect({ listId, type });
-  // const { onAdd } = useAddCardEffect(type, listId);
-  const onAdd = () => {};
+  const { onAdd } = useAddCardEffect(type, listId);
 
   return (
     <Wrapper>
@@ -27,6 +27,8 @@ export const ListHeader: React.FC<Props> = (props) => {
         <div>{title}</div>
       </ListHeaderTitle>
       <ListHeaderController>
+        <LeftButton />
+        <RightButton color={"red"} />
         <PlusButton onClick={onAdd} />
         <Dropdown
           overlay={
@@ -56,6 +58,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 1rem;
 `;
 
 const ListHeaderTitle = styled.div`
@@ -80,4 +83,16 @@ const PlusButton = styled(FaPlus)`
   cursor: pointer;
   margin-right: 0.4rem;
   font-size: 0.8rem;
+`;
+
+const LeftButton = styled(FaCaretLeft)`
+  cursor: pointer;
+  margin-right: 0.2rem;
+  font-size: 1rem;
+`;
+
+const RightButton = styled(FaCaretRight)`
+  cursor: pointer;
+  margin-right: 0.4rem;
+  font-size: 1rem;
 `;
