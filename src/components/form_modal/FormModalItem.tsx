@@ -23,7 +23,7 @@ export interface FormModalItemProps {
   name: string;
   label: string;
   type: FormModalItemType;
-  defaultValue: unknown;
+  defaultValue: string;
   notRequired?: boolean;
   placeholder?: string;
   validate?: (value: any) => string | undefined;
@@ -41,6 +41,7 @@ export const FormModalItem: React.FC<FormModalItemProps> = (props) => {
     validate,
     setFieldValue,
     selectOptions,
+    defaultValue,
   } = props;
 
   let JSXFragment: React.ReactNode | null = null;
@@ -62,6 +63,7 @@ export const FormModalItem: React.FC<FormModalItemProps> = (props) => {
             type={type === 'upload:image' ? 'image' : 'file'}
             fieldName={name}
             setFieldValue={setFieldValue!}
+            defaultValue={defaultValue}
           />
         </>
       );

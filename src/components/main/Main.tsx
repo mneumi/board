@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Spin } from 'antd';
 import { useSelector } from '../../store';
@@ -9,12 +9,12 @@ import { useGetListEffect } from '../list/hooks';
 export const Main: React.FC = () => {
   const currentGuide = useSelector((state) => state.guide.currentGuide);
 
-  const { list, total, isLoading, isError, take, page, setPage } =
-    useGetListEffect(currentGuide);
+  const { list, isLoading, isError } = useGetListEffect(currentGuide);
+  const [listId, setListId] = useState<number>(0);
 
   useEffect(() => {
-    return () => setPage(1); // 重置页数
-  }, [currentGuide, setPage]);
+    setListId(0);
+  }, [currentGuide]);
 
   const render = () => {
     if (isError) {
@@ -27,14 +27,8 @@ export const Main: React.FC = () => {
 
     return (
       <React.Fragment>
-        <ToolBar
-          total={total}
-          page={page}
-          pageSize={take}
-          setPage={setPage}
-          type={currentGuide}
-        />
-        <Content list={list} type={currentGuide} />
+        <ToolBar list={list} type={currentGuide} setListId={setListId} />
+        <Content type={currentGuide} listId={listId} />
       </React.Fragment>
     );
   };

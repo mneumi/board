@@ -11,10 +11,14 @@ interface Props {
   type: GuideType;
   title: string;
   listId: number;
+  canPrev: boolean;
+  canNext: boolean;
+  prevPage: () => void;
+  nextPage: () => void;
 }
 
 export const ListHeader: React.FC<Props> = (props) => {
-  const { title, type, listId } = props;
+  const { title, type, listId, prevPage, nextPage, canPrev, canNext } = props;
 
   const { onSet, setLoading } = useSetListEffect({ listId, type, title });
   const { onDel, delLoading } = useDelListEffect({ listId, type });
@@ -27,8 +31,8 @@ export const ListHeader: React.FC<Props> = (props) => {
         <div>{title}</div>
       </ListHeaderTitle>
       <ListHeaderController>
-        <LeftButton />
-        <RightButton color={"red"} />
+        <LeftButton canPrev={canPrev} onClick={prevPage} />
+        <RightButton canNext={canNext} onClick={nextPage} />
         <PlusButton onClick={onAdd} />
         <Dropdown
           overlay={
@@ -58,7 +62,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 1rem;
+  padding: 0 1rem;
+  height: 100%;
 `;
 
 const ListHeaderTitle = styled.div`
@@ -89,10 +94,12 @@ const LeftButton = styled(FaCaretLeft)`
   cursor: pointer;
   margin-right: 0.2rem;
   font-size: 1rem;
+  color: ${(props: { canPrev: boolean }) => (props.canPrev ? 'black' : '#999')};
 `;
 
 const RightButton = styled(FaCaretRight)`
   cursor: pointer;
   margin-right: 0.4rem;
   font-size: 1rem;
+  color: ${(props: { canNext: boolean }) => (props.canNext ? 'black' : '#999')};
 `;

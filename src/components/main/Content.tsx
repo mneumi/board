@@ -1,30 +1,174 @@
 import React from 'react';
 import styled from 'styled-components';
 import { GuideType } from '../../common/interface';
-import { Row, Col } from 'antd';
-import { List } from '../list';
+import { List, Card } from 'antd';
+import { MusicCard } from '../card';
 
 interface Props {
   type: GuideType;
-  list: {
-    id: number;
-    userId: number;
-    title: string;
-  }[];
+  listId: number;
 }
 
+const data = [
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+  {
+    title: 'Title 1',
+  },
+  {
+    title: 'Title 2',
+  },
+  {
+    title: 'Title 3',
+  },
+  {
+    title: 'Title 4',
+  },
+  {
+    title: 'Title 5',
+  },
+  {
+    title: 'Title 6',
+  },
+];
+
 export const Content: React.FC<Props> = (props) => {
-  const { list, type } = props;
+  const { type, listId } = props;
 
   return (
     <Wrapper>
-      <Row style={{ width: '100%' }}>
-        {list.map((item) => (
-          <Col span={6} key={item.id}>
-            <List listId={item.id} type={type} title={item.title}></List>
-          </Col>
-        ))}
-      </Row>
+      <CustomList
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 2,
+          md: 4,
+          lg: 4,
+          xl: 6,
+          xxl: 6,
+        }}
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item>
+            <MusicCard
+              listId={1}
+              cardId={1}
+              coverImg={''}
+              singer={''}
+              song={''}
+              songUrl={''}
+              language={'chinese'}
+              setPage={(v: number) => {}}
+            />
+          </List.Item>
+        )}
+      />
     </Wrapper>
   );
 };
@@ -33,5 +177,13 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-around;
+  background-color: blue;
+  overflow-x: hidden;
+  padding: 1rem;
+`;
+
+const CustomList = styled(List)`
+  width: 100%;
+  background-color: red;
+  overflow-x: hidden;
 `;

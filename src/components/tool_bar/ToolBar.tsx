@@ -1,29 +1,34 @@
+import { Menu, Select } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import { GuideType } from '../../common/interface';
+import { ListDto } from '../list/hooks';
 import { AddListButton } from './AddListButton';
-import { Pagination } from './Pagination';
+import { AddCardButton } from './AddCardButton';
+import { UserOutlined } from '@ant-design/icons';
 
 interface Props {
   type: GuideType;
-  total: number;
-  page: number;
-  pageSize: number;
-  setPage: (page: number) => void;
+  list: ListDto[];
+  setListId: (v: number) => void;
 }
 
 export const ToolBar: React.FC<Props> = (props) => {
-  const { type, total, page, pageSize, setPage } = props;
+  const { type, list, setListId } = props;
 
   return (
     <Wrapper>
-      <AddListButton type={type} />
-      <Pagination
-        total={total}
-        page={page}
-        pageSize={pageSize}
-        setPage={setPage}
-      />
+      <LeftButtonGroup>
+        <AddListButton type={type} />
+        <Select defaultValue={list[0].id} onChange={setListId}>
+          {list.map((item) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.title}
+            </Select.Option>
+          ))}
+        </Select>
+      </LeftButtonGroup>
+      <AddCardButton />
     </Wrapper>
   );
 };
@@ -34,5 +39,10 @@ const Wrapper = styled.div`
   border-bottom: 1px solid #fff;
   display: flex;
   align-items: center;
-  padding-left: 2rem;
+  padding: 0 2rem;
+  background-color: red;
+`;
+
+const LeftButtonGroup = styled.div`
+  flex: 1;
 `;

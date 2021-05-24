@@ -1,7 +1,6 @@
-import { Modal } from 'antd';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { Modal } from 'antd';
+import { useQuery } from 'react-query';
 import { GuideType } from '../../common/interface';
 import { useCustomMutation } from '../../utils/request';
 import {
@@ -15,9 +14,14 @@ interface SetListParams {
   title: string;
 }
 
-interface DelParams {
+interface DelListParams {
   type: GuideType;
   listId: number;
+}
+
+export interface ListDto {
+  id: number;
+  title: string;
 }
 
 export const useAddListEffect = (type: GuideType) => {
@@ -60,7 +64,7 @@ export const useAddListEffect = (type: GuideType) => {
   return { onAdd, loading };
 };
 
-export const useDelListEffect = ({ type, listId }: DelParams) => {
+export const useDelListEffect = ({ type, listId }: DelListParams) => {
   const { mutate: delList, loading: delLoading } = useCustomMutation({
     cacheTag: `${type}list`,
     url: `/${type}list/${listId}`,
@@ -127,39 +131,16 @@ export const useSetListEffect = ({ listId, title, type }: SetListParams) => {
   return { onSet, setLoading };
 };
 
-export const useGetListEffect = (type: GuideType, take = 4) => {
-  const queryClient = useQueryClient();
-  const [page, setPage] = useState<number>(1);
-
-  const { data, isLoading, isError } = useQuery(
-    [`${type}list`, { take, page }],
-    ({ queryKey }) => {
-      const { take, page } = queryKey[1] as { take: number; page: number };
-      return axios.get(`/${type}list`, {
-        params: {
-          take,
-          page,
-        },
-      });
-    }
+export const useGetListEffect = (type: GuideType) => {
+  const { data, isLoading, isError } = useQuery([`${type}list`], () =>
+    axios.get(`/${type}list`)
   );
 
-  useEffect(() => {
-    queryClient.invalidateQueries(`${type}list`);
-  }, [page, type, queryClient]);
-
-  const list = data?.data.message.list;
-  const total = data?.data.message.total ?? 0;
-  const pageCount = Math.ceil(total / take);
+  const list = data?.data.message.list as ListDto[];
 
   return {
     list,
-    pageCount,
-    total,
     isLoading,
     isError,
-    page,
-    take,
-    setPage,
   };
 };

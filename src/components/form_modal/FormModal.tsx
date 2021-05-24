@@ -1,8 +1,9 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { SubmitButton, ResetButton, Form } from 'formik-antd';
-import { Modal as AntdModal, Button, Row, Col } from 'antd';
+import { Modal as AntdModal, Button, Row, Col, Space } from 'antd';
 import { FormModalItem, FormModalItemProps } from './FormModalItem';
+import styled from 'styled-components';
 
 export interface FormModalProps {
   title: string;
@@ -13,10 +14,6 @@ export interface FormModalProps {
   formModalItems: FormModalItemProps[];
   htmlElement: HTMLElement;
 }
-
-// function validateRequired(value: string) {
-//   return value ? undefined : '输入不能为空';
-// }
 
 export const FormModal: React.FC<FormModalProps> = (props) => {
   const {
@@ -63,10 +60,12 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
                 );
               })}
               <Row>
-                <Col offset={8}>
+                <Col offset={5}>
                   <Button.Group>
                     <Button onClick={onCancel}>{cancelText}</Button>
-                    <ResetButton>Reset</ResetButton>
+                    <Gap />
+                    <ResetButton>重置</ResetButton>
+                    <Gap />
                     <SubmitButton>{okText}</SubmitButton>
                   </Button.Group>
                 </Col>
@@ -79,72 +78,6 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
   );
 };
 
-// const FormController = styled.div`
-//   display: flex;
-//   justify-content: flex-end;
-//   margin-top: 0.5rem;
-//   > * {
-//     margin-right: 1rem;
-//   }
-// `;
-
-/*
-<Form form={form} layout="vertical" onFinish={onFinish}>
-        {formItems.map((item) => {
-          return item?.type === 'upload' ? (
-            <>
-              <Form.Item
-                name={item.name}
-                label={item.label}
-                rules={item.rules}
-                key={item.key}
-                initialValue={imageUrl}
-              >
-                <Input
-                  value={imageUrl}
-                  defaultValue={imageUrl}
-                  // style={{ display: 'none', height: 0 }}
-                  allowClear
-                  placeholder={item.placeholder}
-                />
-                <Upload setHasUpload={setHasUpload} setImageUrl={setImageUrl} />
-              </Form.Item>
-              {imageUrl}
-              
-            </>
-          ) : item?.type === 'selector' && item.selectList ? (
-            <Form.Item label={item.label}>
-              <Select
-                defaultValue={item.selectList[0].value}
-                onChange={(value) => console.log(value)}
-              >
-                {item.selectList.map((item) => (
-                  <Select.Option value={item.value}>{item.name}</Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          ) : (
-            <Form.Item
-              name={item.name}
-              label={item.label}
-              rules={item.rules}
-              key={item.key}
-              initialValue={item.initialValue}
-            >
-              <Input
-                // value={item.initialValue}
-                // defaultValue={item.initialValue}
-                allowClear
-                placeholder={item.placeholder}
-              />
-            </Form.Item>
-          );
-        })}
-        <FormController>
-          <Button onClick={cancelCb}>{cancelText}</Button>
-          <Button type="primary" htmlType="submit">
-            {confirmText}
-          </Button>
-        </FormController>
-      </Form>
-*/
+const Gap = styled.div`
+  margin: 0 1rem;
+`;
